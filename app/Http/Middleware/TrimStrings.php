@@ -4,6 +4,11 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\TrimStrings as Middleware;
 
+/**
+ * Middleware to automatically trim incoming request strings, converting
+ * whitespace trimmed strings and optional null conversions. Laravel
+ * supplies this class by default, and we simply extend it here.
+ */
 class TrimStrings extends Middleware
 {
     /**

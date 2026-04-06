@@ -5,10 +5,24 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
+/**
+ * Central exception handler for the application. This extends the
+ * base Laravel exception handler and can be customised to render
+ * user‑friendly error pages and report exceptions to external services.
+ */
 class Handler extends ExceptionHandler
 {
     /**
-     * The list of the inputs that are never flashed to the session on validation exceptions.
+     * A list of the exception types that are not reported.
+     *
+     * @var array<int, class-string<Throwable>>
+     */
+    protected $dontReport = [
+        //
+    ];
+
+    /**
+     * A list of the inputs that are never flashed for validation exceptions.
      *
      * @var array<int, string>
      */
@@ -23,8 +37,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $e, $request) {
+            // Custom error pages can be implemented here.
         });
     }
 }

@@ -1,34 +1,22 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
     |--------------------------------------------------------------------------
     |
     | This file is for storing the credentials for third party services such
-    | as Mailgun, Postmark, AWS and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
+    | as OpenAI. This allows you to keep all of your secret keys in one
+    | place, making it easy to change them without touching other parts of
+    | your codebase. When deploying your application, remember to set the
+    | corresponding environment variables (e.g. OPENAI_API_KEY) so these
+    | values can be correctly loaded by Laravel's config helper.
     |
     */
 
-    'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
-        'scheme' => 'https',
+    'openai' => [
+        // Your OpenAI API key used for generating blog content. Set this in your .env file.
+        'key' => env('OPENAI_API_KEY'),
     ],
-
-    'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
-    ],
-
-    'ses' => [
-        'key' => env('AWS_ACCESS_KEY_ID'),
-        'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    ],
-
 ];
