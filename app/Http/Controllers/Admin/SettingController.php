@@ -126,4 +126,22 @@ class SettingController extends Controller
         $firebase->save();
         return redirect()->route('admin.settings.firebase')->with('success', 'Firebase settings updated successfully.');
     }
+
+    // Design settings
+    public function design(): View
+    {
+        $settings = Setting::pluck('value', 'key')->toArray();
+        return view('admin.settings.design', compact('settings'));
+    }
+
+    public function updateDesign(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'custom_css' => 'nullable|string|max:20000',
+        ]);
+
+        Setting::updateOrCreate(['key' => 'custom_css'], ['value' => $data['custom_css'] ?? null]);
+
+        return redirect()->route('admin.settings.design')->with('success', 'Design settings updated successfully.');
+    }
 }
