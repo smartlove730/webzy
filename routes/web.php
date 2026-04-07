@@ -34,6 +34,10 @@ Route::get('/contact-us', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact-us', [ContactController::class, 'submit'])->name('contact.submit');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
+// Legacy auth/welcome compatibility routes
+Route::get('/home', fn () => redirect()->route('home'))->name('home.redirect');
+Route::get('/register', fn () => redirect()->route('login'))->name('register');
+
 // Sitemap
 Route::get('/sitemap.xml', function () {
     $pages = \App\Models\Page::all();
@@ -84,6 +88,11 @@ Route::prefix('admin')
         Route::resource('media', App\Http\Controllers\Admin\MediaController::class);
         // Newsletter subscribers
         Route::resource('subscribers', App\Http\Controllers\Admin\SubscriberController::class)->only(['index', 'destroy']);
+
+        // Backward-compatible alias used in legacy admin blade
+        Route::get('contact-messages', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])
+            ->name('contact-messages.index');
+
         // Contact messages
         Route::resource('contacts', App\Http\Controllers\Admin\ContactMessageController::class)->only(['index', 'show', 'destroy']);
         // Social links
