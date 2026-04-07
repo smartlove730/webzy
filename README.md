@@ -7,6 +7,41 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Webzy Local Setup
+
+1. Install PHP 8.1+ with required extensions (`mbstring`, `openssl`, `pdo`, `tokenizer`, `xml`, `ctype`, `json`, `fileinfo`, `curl`, `zip`).
+2. Install Composer 2.6+.
+3. Install project dependencies:
+
+   ```bash
+   composer update
+   ```
+
+4. Copy environment file and generate the app key:
+
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. Run migrations and seeders:
+
+   ```bash
+   php artisan migrate --seed
+   ```
+
+### Composer troubleshooting
+
+- If Composer reports lock file mismatch, regenerate the lock file:
+
+  ```bash
+  composer update
+  ```
+
+- If your environment uses a restrictive proxy and `composer update` fails with `CONNECT tunnel failed`, ensure the proxy allows HTTPS `CONNECT` traffic to:
+  - `repo.packagist.org`
+  - `api.github.com`
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
