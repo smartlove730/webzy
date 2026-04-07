@@ -54,6 +54,7 @@
                 ['label' => 'SEO', 'route' => 'admin.settings.seo'],
                 ['label' => 'Social Links', 'route' => 'admin.social-links.index'],
                 ['label' => 'Firebase', 'route' => 'admin.settings.firebase'],
+                ['label' => 'Design', 'route' => 'admin.settings.design'],
             ],
         ],
         [

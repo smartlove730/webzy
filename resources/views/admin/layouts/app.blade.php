@@ -9,6 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    @php($settings = \App\Models\Setting::pluck('value', 'key')->toArray())
+    @if(!empty($settings['custom_css']))
+        <style>
+            {!! $settings['custom_css'] !!}
+        </style>
+    @endif
     @stack('styles')
 </head>
 <body class="bg-gray-100 font-sans antialiased">

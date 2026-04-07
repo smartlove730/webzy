@@ -37,6 +37,11 @@
         .btn-primary:hover { background-color: var(--secondary-color); }
         .text-primary { color: var(--primary-color); }
     </style>
+    @if(!empty($settings['custom_css']))
+        <style>
+            {!! $settings['custom_css'] !!}
+        </style>
+    @endif
     @stack('styles')
 </head>
 <body class="flex flex-col min-h-screen bg-gray-50 text-gray-800">

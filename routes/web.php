@@ -84,6 +84,8 @@ Route::prefix('admin')
         Route::post('settings/seo', [App\Http\Controllers\Admin\SettingController::class, 'updateSeo'])->name('settings.seo.update');
         Route::get('settings/firebase', [App\Http\Controllers\Admin\SettingController::class, 'firebase'])->name('settings.firebase');
         Route::post('settings/firebase', [App\Http\Controllers\Admin\SettingController::class, 'updateFirebase'])->name('settings.firebase.update');
+        Route::get('settings/design', [App\Http\Controllers\Admin\SettingController::class, 'design'])->name('settings.design');
+        Route::post('settings/design', [App\Http\Controllers\Admin\SettingController::class, 'updateDesign'])->name('settings.design.update');
         // Media library
         Route::resource('media', App\Http\Controllers\Admin\MediaController::class);
         // Newsletter subscribers
