@@ -54,7 +54,7 @@
                         <p class="text-2xl font-bold">{{ $metrics['blogPosts'] }}</p>
                     </div>
                 </div>
-                <a href="{{ route('admin.blog.index') }}" class="text-blue-600 hover:underline">View</a>
+                <a href="{{ route('admin.blogs.index') }}" class="text-blue-600 hover:underline">View</a>
             </div>
         </div>
         <!-- Subscribers Card -->
