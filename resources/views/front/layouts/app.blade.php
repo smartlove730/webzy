@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @php
+        $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
+        $theme = \App\Models\ThemeSetting::first();
+        $primary = $theme?->primary_color ?? '#4F46E5';
+        $secondary = $theme?->secondary_color ?? '#06B6D4';
+    @endphp
     <title>@yield('meta_title', $settings['default_meta_title'] ?? config('app.name'))</title>
     <meta name="description" content="@yield('meta_description', $settings['default_meta_description'] ?? config('app.name').' – Premium Web Development Services')">
     <meta name="keywords" content="@yield('meta_keywords', $settings['default_meta_keywords'] ?? 'web development, digital agency, web design')">
@@ -24,14 +30,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     
     <!-- Advanced CSS & JS via Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php($viteManifest = public_path('build/manifest.json'))
+    @if(file_exists($viteManifest))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        {{-- Prevent hard failure when assets have not been built on shared hosting. --}}
+        <!-- Front-end assets are missing: run `npm ci && npm run build` and upload public/build. -->
+    @endif
 
-    @php
-        $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
-        $theme = $theme ?? \App\Models\ThemeSetting::first();
-        $primary = $theme->primary_color ?? '#4F46E5';
-        $secondary = $theme->secondary_color ?? '#06B6D4';
-    @endphp
     <style>
         :root {
             --primary: {{ $primary }};
