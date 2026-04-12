@@ -25,7 +25,7 @@
     }
 @endphp
 
-<header class="header">
+<header class="header" style="margin-top:20px;position:relative;">
     <div class="container navbar">
         <div class="brand">
             <a href="{{ url('/') }}" style="display:flex; align-items:center; color:inherit;">

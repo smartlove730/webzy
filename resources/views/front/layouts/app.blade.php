@@ -58,7 +58,7 @@
     <div class="app-wrapper">
         @include('front.partials.header')
 
-        <main class="main-content" style="margin-top:20px;">
+        <main class="main-content" >
             @yield('content')
         </main>
 
