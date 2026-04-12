@@ -24,13 +24,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     
     <!-- Advanced CSS & JS via Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @php($viteManifest = public_path('build/manifest.json'))
+    @if(file_exists($viteManifest))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        {{-- Prevent hard failure when assets have not been built on shared hosting. --}}
+        <!-- Front-end assets are missing: run `npm ci && npm run build` and upload public/build. -->
+    @endif
 
     @php
         $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
         $theme = $theme ?? \App\Models\ThemeSetting::first();
-        $primary = $theme->primary_color ?? '#4F46E5';
-        $secondary = $theme->secondary_color ?? '#06B6D4';
+        $primary = $theme?->primary_color ?? '#4F46E5';
+        $secondary = $theme?->secondary_color ?? '#06B6D4';
     @endphp
     <style>
         :root {
