@@ -48,6 +48,15 @@ Route::get('/sitemap.xml', function () {
         ->header('Content-Type', 'text/xml');
 });
 
+// Utility: clear all caches (for cPanel deployments without SSH)
+Route::get('/clear-cache', function () {
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('route:clear');
+    return 'All caches cleared! <a href="/">Go to homepage</a>';
+});
+
 // Admin routes (CMS)
 Route::prefix('admin')
     ->name('admin.')
