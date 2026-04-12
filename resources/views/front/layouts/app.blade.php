@@ -35,8 +35,8 @@
     @php
         $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
         $theme = $theme ?? \App\Models\ThemeSetting::first();
-        $primary = $theme->primary_color ?? '#4F46E5';
-        $secondary = $theme->secondary_color ?? '#06B6D4';
+        $primary = $theme?->primary_color ?? '#4F46E5';
+        $secondary = $theme?->secondary_color ?? '#06B6D4';
     @endphp
     <style>
         :root {
