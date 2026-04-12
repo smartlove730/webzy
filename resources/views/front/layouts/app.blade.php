@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @php
+        $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
+        $theme = \App\Models\ThemeSetting::first();
+        $primary = $theme?->primary_color ?? '#4F46E5';
+        $secondary = $theme?->secondary_color ?? '#06B6D4';
+    @endphp
     <title>@yield('meta_title', $settings['default_meta_title'] ?? config('app.name'))</title>
     <meta name="description" content="@yield('meta_description', $settings['default_meta_description'] ?? config('app.name').' – Premium Web Development Services')">
     <meta name="keywords" content="@yield('meta_keywords', $settings['default_meta_keywords'] ?? 'web development, digital agency, web design')">
