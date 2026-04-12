@@ -79,7 +79,11 @@
 
     <!-- Firebase configuration (optional) -->
     @php
-        $firebase = \App\Models\FirebaseSetting::first();
+        try {
+            $firebase = \App\Models\FirebaseSetting::first();
+        } catch (\Exception $e) {
+            $firebase = null;
+        }
     @endphp
     @if($firebase && $firebase->server_key && $firebase->sender_id && $firebase->project_id)
         <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
