@@ -5,32 +5,56 @@
 @section('meta_keywords', $page->meta_keywords)
 
 @section('content')
-<section class="bg-gray-100 py-16">
-    <div class="container mx-auto px-6">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-6 text-center">{{ $page->title }}</h1>
-        @if($page->content)
-            <div class="max-w-3xl mx-auto text-lg text-gray-700 mb-10 leading-relaxed space-y-4">
-                {!! $page->content !!}
-            </div>
-        @endif
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach($services as $service)
-                <div class="bg-white shadow rounded p-6 flex flex-col">
-                    <div class="flex items-center mb-4">
-                        <span class="text-primary text-3xl mr-3"><i class="fa {{ $service->icon }}"></i></span>
-                        <h3 class="text-xl font-bold">{{ $service->title }}</h3>
-                    </div>
-                    <p class="text-gray-600 flex-1">{{ $service->short_description }}</p>
-                    <div class="mt-6">
-                        <a href="{{ route('services.show', $service->slug) }}" class="text-primary hover:text-secondary font-medium">Learn More &rarr;</a>
-                    </div>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>{{ $page->title }}</h1>
+            @if($page->content)
+                <div class="page-desc">
+                    {!! $page->content !!}
                 </div>
-            @endforeach
+            @endif
         </div>
-        <div class="mt-8">
-            {{-- Pagination --}}
-            @include('front.partials.pagination', ['paginator' => $services])
+    </section>
+
+    <!-- Services Grid -->
+    <section class="section" style="padding-top: 2rem;">
+        <div class="container">
+            <div class="grid-cards">
+                @foreach($services as $service)
+                    <div class="service-card">
+                        <div class="service-card-header">
+                            <div class="service-card-icon">
+                                <i class="fa {{ $service->icon }}"></i>
+                            </div>
+                            <h3 class="service-card-title">{{ $service->title }}</h3>
+                        </div>
+                        <p class="service-card-text">{{ $service->short_description }}</p>
+                        <a href="{{ route('services.show', $service->slug) }}" class="service-card-link">
+                            Learn More <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Pagination -->
+            @if($services->lastPage() > 1)
+                <nav class="pagination" aria-label="Pagination">
+                    @if ($services->currentPage() > 1)
+                        <a href="{{ $services->url($services->currentPage() - 1) }}" rel="prev">&laquo; Prev</a>
+                    @endif
+                    @for ($i = 1; $i <= $services->lastPage(); $i++)
+                        @if($services->currentPage() == $i)
+                            <span class="active">{{ $i }}</span>
+                        @else
+                            <a href="{{ $services->url($i) }}">{{ $i }}</a>
+                        @endif
+                    @endfor
+                    @if ($services->currentPage() < $services->lastPage())
+                        <a href="{{ $services->url($services->currentPage() + 1) }}" rel="next">Next &raquo;</a>
+                    @endif
+                </nav>
+            @endif
         </div>
-    </div>
-</section>
+    </section>
 @endsection

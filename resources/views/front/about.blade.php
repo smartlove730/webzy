@@ -5,15 +5,26 @@
 @section('meta_keywords', $page->meta_keywords)
 
 @section('content')
-<section class="bg-gray-100 py-16">
-    <div class="container mx-auto px-6">
-        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-6">{{ $page->title }}</h1>
-        <div class="max-w-3xl mx-auto text-lg leading-relaxed text-gray-700 space-y-5">
-            {!! $page->content !!}
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>{{ $page->title }}</h1>
         </div>
-        <div class="mt-10 text-center">
-            <a href="{{ url('/services') }}" class="btn-primary px-5 py-3 rounded text-white font-medium">Explore Our Services</a>
+    </section>
+
+    <!-- Content -->
+    <section class="section" style="padding-top: 2rem;">
+        <div class="container" style="max-width: 850px;">
+            <div class="form-glass" style="border-radius: 24px;">
+                <div style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.9;">
+                    {!! $page->content !!}
+                </div>
+                <div style="margin-top: 3rem; text-align: center;">
+                    <a href="{{ url('/services') }}" class="btn btn-primary">
+                        Explore Our Services <i class="fa fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection

@@ -2,6 +2,7 @@
     use App\Models\Menu;
     use App\Models\Setting;
     use App\Models\ThemeSetting;
+    
     // Retrieve menu assigned to header
     $menu = Menu::where('location', 'header')->with(['items' => function($q) {
         $q->orderBy('order');
@@ -9,16 +10,17 @@
     $settings = $settings ?? Setting::pluck('value', 'key')->toArray();
     $theme = $theme ?? ThemeSetting::first();
     $menuItems = $menu ? $menu->items->where('parent_id', null)->sortBy('order') : collect();
-    // Helper to build nested menus
+    
     function renderMenu($items) {
         if ($items->isEmpty()) return '';
-        $html = '<ul class="space-y-2">';
+        $html = '<ul class="dropdown-menu">';
         foreach ($items as $item) {
             $hasChildren = $item->children && $item->children->count() > 0;
-            $html .= '<li class="relative group">';
-            $html .= '<a href="'.url($item->url).'" class="block px-2 py-1 text-gray-700 hover:text-primary">'.$item->title.'</a>';
+            $html .= '<li>';
+            $html .= '<a href="'.url($item->url).'" class="dropdown-item">'.$item->title.'</a>';
             if ($hasChildren) {
-                $html .= '<div class="absolute left-0 mt-1 hidden group-hover:block bg-white shadow-lg rounded">'.renderMenu($item->children->sortBy('order')).'</div>';
+                // If deep nesting is needed, we could call renderMenu again recursively
+                // $html .= renderMenu($item->children->sortBy('order'));
             }
             $html .= '</li>';
         }
@@ -27,61 +29,51 @@
     }
 @endphp
 
-<header x-data="{ mobileOpen: false }" class="bg-white shadow">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center">
-            <a href="{{ url('/') }}" class="flex items-center">
+<header class="header" style="position:relative;">
+    <div class="container navbar">
+        <div class="brand">
+            <a href="{{ url('/') }}" style="display:flex; align-items:center; color:inherit;">
                 @if($theme && $theme->logo_path)
-                    <img src="{{ asset('storage/'.$theme->logo_path) }}" alt="{{ $settings['site_title'] ?? config('app.name') }}" class="h-10 mr-3">
+                    <img src="{{ asset('storage/'.$theme->logo_path) }}" style="height: 200px;" alt="{{ $settings['site_title'] ?? config('app.name') }}">
                 @endif
-                <span class="text-2xl font-bold text-gray-800">{{ $settings['site_title'] ?? config('app.name') }}</span>
+                
             </a>
         </div>
-        <!-- Desktop Menu -->
-        <nav class="hidden lg:flex items-center space-x-6">
+        
+        <nav class="nav-links">
             @foreach($menuItems as $item)
                 @php $hasChildren = $item->children && $item->children->count() > 0; @endphp
-                <div class="relative group">
-                    <a href="{{ url($item->url) }}" class="text-gray-700 hover:text-primary px-2 py-1 font-medium flex items-center">
+                <div class="nav-item">
+                    <a href="{{ url($item->url) }}" class="nav-link">
                         {{ $item->title }}
-                        @if($hasChildren)
-                            <i class="fa fa-chevron-down ml-1 text-xs"></i>
-                        @endif
+                        @if($hasChildren) <i class="fa fa-chevron-down" style="font-size:0.75rem;"></i> @endif
                     </a>
                     @if($hasChildren)
-                        <div class="absolute left-0 z-40 mt-2 w-48 bg-white border border-gray-200 shadow-lg rounded hidden group-hover:block">
-                            {!! renderMenu($item->children->sortBy('order')) !!}
-                        </div>
+                        {!! renderMenu($item->children->sortBy('order')) !!}
                     @endif
                 </div>
             @endforeach
+            <a href="{{ url('/contact-us') }}" class="btn btn-primary">Get Started</a>
         </nav>
-        <!-- CTA Button on desktop -->
-        <div class="hidden lg:flex">
-            <a href="{{ url('/contact-us') }}" class="btn-primary px-4 py-2 rounded">Get Started</a>
-        </div>
-        <!-- Mobile menu toggle -->
-        <button @click="mobileOpen = !mobileOpen" class="lg:hidden text-gray-700 hover:text-primary focus:outline-none">
-            <i class="fa" :class="mobileOpen ? 'fa-xmark' : 'fa-bars'" class="text-2xl"></i>
+        
+        <button class="mobile-toggle">
+            <i class="fa fa-bars"></i>
         </button>
     </div>
+    
     <!-- Mobile Menu -->
-    <div x-show="mobileOpen" x-cloak class="lg:hidden bg-white border-t border-gray-200">
-        <nav class="px-6 py-4 space-y-2">
-            @foreach($menuItems as $item)
-                @php $hasChildren = $item->children && $item->children->count() > 0; @endphp
-                <div>
-                    <a href="{{ url($item->url) }}" class="block px-2 py-1 text-gray-700 hover:text-primary font-medium">{{ $item->title }}</a>
-                    @if($hasChildren)
-                        <div class="ml-4 mt-1 space-y-1">
-                            @foreach($item->children->sortBy('order') as $child)
-                                <a href="{{ url($child->url) }}" class="block px-2 py-1 text-gray-600 hover:text-primary">{{ $child->title }}</a>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-            @endforeach
-            <a href="{{ url('/contact-us') }}" class="block mt-2 px-2 py-2 bg-primary text-white text-center rounded">Get Started</a>
-        </nav>
+    <div class="mobile-nav">
+        @foreach($menuItems as $item)
+            @php $hasChildren = $item->children && $item->children->count() > 0; @endphp
+            <div class="nav-item">
+                <a href="{{ url($item->url) }}" class="nav-link">{{ $item->title }}</a>
+                @if($hasChildren)
+                    {!! renderMenu($item->children->sortBy('order')) !!}
+                @endif
+            </div>
+        @endforeach
+        <div style="padding: 1rem 1.5rem;">
+            <a href="{{ url('/contact-us') }}" class="btn btn-primary" style="width: 100%;">Get Started</a>
+        </div>
     </div>
 </header>

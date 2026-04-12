@@ -8,21 +8,32 @@
 @section('canonical', url('/services/'.$service->slug))
 
 @section('content')
-<section class="bg-gray-100 py-16">
-    <div class="container mx-auto px-6 max-w-4xl">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-4">{{ $service->title }}</h1>
-        <p class="text-gray-600 text-lg mb-8">{{ $service->short_description }}</p>
-        @if($service->image)
-            <div class="mb-6">
-                <img src="{{ asset('storage/'.$service->image) }}" alt="{{ $service->title }}" class="w-full h-64 object-cover rounded">
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>{{ $service->title }}</h1>
+            <div class="page-desc">{{ $service->short_description }}</div>
+        </div>
+    </section>
+
+    <!-- Service Detail -->
+    <section class="section" style="padding-top: 2rem;">
+        <div class="container" style="max-width: 900px;">
+            <div class="form-glass" style="border-radius: 24px;">
+                @if($service->image)
+                    <div style="margin-bottom: 2rem; border-radius: 16px; overflow: hidden;">
+                        <img src="{{ asset('storage/'.$service->image) }}" alt="{{ $service->title }}" style="width: 100%; height: 320px; object-fit: cover; display: block;">
+                    </div>
+                @endif
+                <div style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.9;">
+                    {!! $service->description !!}
+                </div>
+                <div style="margin-top: 3rem; text-align: center;">
+                    <a href="{{ url('/contact-us') }}" class="btn btn-primary">
+                        Start Your Project <i class="fa fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
             </div>
-        @endif
-        <div class="text-gray-700 leading-relaxed space-y-4">
-            {!! $service->description !!}
         </div>
-        <div class="mt-10">
-            <a href="{{ url('/contact-us') }}" class="btn-primary px-5 py-3 rounded">Start Your Project</a>
-        </div>
-    </div>
-</section>
+    </section>
 @endsection
