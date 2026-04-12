@@ -8,42 +8,30 @@
     @php
         $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
         $theme = \App\Models\ThemeSetting::first();
-        $primary = $theme?->primary_color ?? '#4F46E5';
-        $secondary = $theme?->secondary_color ?? '#06B6D4';
+        $primary = $theme->primary_color ?? '#4F46E5';
+        $secondary = $theme->secondary_color ?? '#06B6D4';
     @endphp
     <title>@yield('meta_title', $settings['default_meta_title'] ?? config('app.name'))</title>
     <meta name="description" content="@yield('meta_description', $settings['default_meta_description'] ?? config('app.name').' – Premium Web Development Services')">
     <meta name="keywords" content="@yield('meta_keywords', $settings['default_meta_keywords'] ?? 'web development, digital agency, web design')">
-    
+
     {{-- Open Graph / Social Meta Tags --}}
     <meta property="og:title" content="@yield('meta_title', $settings['default_meta_title'] ?? config('app.name'))">
     <meta property="og:description" content="@yield('meta_description', $settings['default_meta_description'] ?? config('app.name').' – Premium Web Development Services')">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="@yield('meta_image', isset($theme) && $theme->logo_path ? asset('storage/'.$theme->logo_path) : '')">
     <meta property="og:type" content="@yield('meta_type', 'website')">
-    
+
     {{-- Canonical --}}
     <link rel="canonical" href="@yield('canonical', url()->current())" />
-    <link rel="icon" type="image/png" href="@php $theme = \App\Models\ThemeSetting::first(); echo $theme && $theme->favicon_path ? asset('storage/'.$theme->favicon_path) : asset('favicon.ico'); @endphp">
+    <link rel="icon" type="image/png" href="{{ $theme && $theme->favicon_path ? asset('storage/'.$theme->favicon_path) : asset('favicon.ico') }}">
 
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    
-    <!-- Advanced CSS & JS via Vite -->
-    @php($viteManifest = public_path('build/manifest.json'))
-    @if(file_exists($viteManifest))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        {{-- Prevent hard failure when assets have not been built on shared hosting. --}}
-        <!-- Front-end assets are missing: run `npm ci && npm run build` and upload public/build. -->
-    @endif
 
-    @php
-        $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
-        $theme = $theme ?? \App\Models\ThemeSetting::first();
-        $primary = $theme?->primary_color ?? '#4F46E5';
-        $secondary = $theme?->secondary_color ?? '#06B6D4';
-    @endphp
+    <!-- CSS & JS via Vite -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         :root {
             --primary: {{ $primary }};
@@ -69,11 +57,11 @@
 
     <div class="app-wrapper">
         @include('front.partials.header')
-        
+
         <main class="main-content">
             @yield('content')
         </main>
-        
+
         @include('front.partials.footer')
     </div>
 
@@ -104,7 +92,7 @@
             });
         </script>
     @endif
-    
+
     @stack('scripts')
 </body>
 </html>
