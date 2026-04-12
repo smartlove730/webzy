@@ -30,9 +30,9 @@
         <div class="brand">
             <a href="{{ url('/') }}" style="display:flex; align-items:center; color:inherit;">
                 @if($theme && $theme->logo_path)
-                    <img src="{{ asset('storage/'.$theme->logo_path) }}" alt="{{ $settings['site_title'] ?? config('app.name') }}" style="height:40px; margin-right:12px;">
+                    <img src="{{ asset('storage/'.$theme->logo_path) }}" alt="{{ $settings['site_title'] ?? config('app.name') }}" style="height:200px; margin-right:12px;">
                 @endif
-                {{ $settings['site_title'] ?? config('app.name') }}
+               
             </a>
         </div>
 
