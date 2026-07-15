@@ -1,36 +1,79 @@
-@extends('front.layouts.app')
+@extends('front.layouts.cinematic')
 
-@section('meta_title', $page->meta_title)
-@section('meta_description', $page->meta_description)
-@section('meta_keywords', $page->meta_keywords)
+@section('meta_title', optional($page)->meta_title ?? 'Portfolio')
+@section('meta_description', optional($page)->meta_description ?? '')
+@section('meta_keywords', optional($page)->meta_keywords ?? '')
 
 @section('content')
-<section class="bg-gray-100 py-16">
-    <div class="container mx-auto px-6">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-6 text-center">{{ $page->title }}</h1>
-        <div class="max-w-3xl mx-auto text-lg text-gray-700 mb-10 leading-relaxed space-y-4">
-            {!! $page->content !!}
+
+    {{-- ══ PAGE HERO ══ --}}
+    <section class="cin-page-hero">
+        <div class="container" style="display:flex;flex-direction:column;align-items:center;">
+            <span class="cin-section-label">Our Work</span>
+            <h1 class="cin-page-hero__title text-gradient">{{ optional($page)->title ?? 'Portfolio' }}</h1>
+            <p class="cin-page-hero__desc">
+                @if(optional($page)->content)
+                    {!! strip_tags($page->content) !!}
+                @else
+                    Explore our latest projects — each one a testament to our commitment
+                    to exceptional design and engineering.
+                @endif
+            </p>
+            <div class="cin-breadcrumb">
+                <a href="{{ route('home') }}">Home</a>
+                <span>/</span>
+                <span>Portfolio</span>
+            </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach($projects as $project)
-                <div class="bg-white shadow rounded overflow-hidden flex flex-col">
-                    @if($project->image)
-                        <img src="{{ asset('storage/'.$project->image) }}" alt="{{ $project->title }}" class="h-48 w-full object-cover">
-                    @endif
-                    <div class="p-6 flex-1 flex flex-col">
-                        <span class="text-sm text-primary mb-2">{{ $project->category }}</span>
-                        <h3 class="text-xl font-bold mb-2">{{ $project->title }}</h3>
-                        <p class="text-gray-600 flex-1">{{ $project->short_description }}</p>
-                        <div class="mt-4">
-                            <a href="{{ route('portfolio.show', $project->slug) }}" class="text-primary hover:text-secondary font-medium">View Project &rarr;</a>
+    </section>
+
+    {{-- ══ PORTFOLIO GRID ══ --}}
+    <section class="cin-page-section">
+        <div class="container">
+            <div class="cin-portfolio-grid cin-stagger-grid">
+                @foreach($projects as $project)
+                    <div class="cin-portfolio-card cin-stagger-item">
+                        @if($project->image)
+                            <div style="overflow:hidden;">
+                                <img src="{{ asset('storage/'.$project->image) }}"
+                                    alt="{{ $project->title }}"
+                                    class="cin-portfolio-card__img">
+                            </div>
+                        @else
+                            <div style="height:220px;background:linear-gradient(135deg,rgba(79,70,229,0.15),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center;">
+                                <span style="font-size:3rem;opacity:0.3;">✦</span>
+                            </div>
+                        @endif
+                        <div class="cin-portfolio-card__body">
+                            <span class="cin-portfolio-card__category">{{ $project->category ?? 'Project' }}</span>
+                            <h3 class="cin-portfolio-card__title">{{ $project->title }}</h3>
+                            <p class="cin-portfolio-card__text">{{ $project->short_description }}</p>
+                            <a href="{{ route('portfolio.show', $project->slug) }}" class="cin-service-link">
+                                View Project <i class="fa fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+
+            @if($projects->lastPage() > 1)
+                <nav class="cin-pagination" aria-label="Pagination">
+                    @if ($projects->currentPage() > 1)
+                        <a href="{{ $projects->url($projects->currentPage() - 1) }}" rel="prev">&laquo;</a>
+                    @endif
+                    @for ($i = 1; $i <= $projects->lastPage(); $i++)
+                        @if($projects->currentPage() == $i)
+                            <span class="active">{{ $i }}</span>
+                        @else
+                            <a href="{{ $projects->url($i) }}">{{ $i }}</a>
+                        @endif
+                    @endfor
+                    @if ($projects->currentPage() < $projects->lastPage())
+                        <a href="{{ $projects->url($projects->currentPage() + 1) }}" rel="next">&raquo;</a>
+                    @endif
+                </nav>
+            @endif
         </div>
-        <div class="mt-8">
-            @include('front.partials.pagination', ['paginator' => $projects])
-        </div>
-    </div>
-</section>
+    </section>
+
 @endsection

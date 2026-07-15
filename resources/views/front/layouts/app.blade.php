@@ -29,8 +29,12 @@
     <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
     <!-- CSS & JS via Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/cinematic.css', 'resources/js/app.js'])
 
     <style>
         :root {
@@ -46,7 +50,10 @@
     @stack('styles')
 </head>
 <body>
-    <!-- Advanced Ambient Effects -->
+    <!-- Cinematic Ambient Effects -->
+    <canvas id="starfield"></canvas>
+    <div class="holo-grid"></div>
+    <div class="scanlines"></div>
     <div id="cursor-glow"></div>
     <div class="ambient-bg">
         <div class="blob blob-1"></div>
@@ -54,6 +61,14 @@
         <div class="blob blob-3"></div>
     </div>
     <div class="noise-overlay"></div>
+
+    <!-- Floating Particles -->
+    <div class="particle" style="left:10%;width:3px;height:3px;animation-delay:0s;animation-duration:12s"></div>
+    <div class="particle" style="left:25%;width:2px;height:2px;animation-delay:2s;animation-duration:18s"></div>
+    <div class="particle" style="left:45%;width:4px;height:4px;animation-delay:5s;animation-duration:14s"></div>
+    <div class="particle" style="left:65%;width:2px;height:2px;animation-delay:8s;animation-duration:16s"></div>
+    <div class="particle" style="left:80%;width:3px;height:3px;animation-delay:3s;animation-duration:20s"></div>
+    <div class="particle" style="left:92%;width:2px;height:2px;animation-delay:7s;animation-duration:13s"></div>
 
     <div class="app-wrapper">
         @include('front.partials.header')

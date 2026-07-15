@@ -22,7 +22,8 @@ use App\Http\Controllers\Admin\DashboardController;
 */
 
 // Front‑facing routes
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', fn() => view('front.cinematic'))->name('home');
 Route::get('/about-us', [PageController::class, 'about'])->name('about');
 Route::get('/services', [ServiceController::class, 'index'])->name('services');
 Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('services.show');

@@ -4,8 +4,13 @@
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/cinematic.css": {
+    "file": "assets/cinematic-DNEQWGEN.css",
+    "src": "resources/css/cinematic.css",
+    "isEntry": true
+  },
   "resources/js/app.js": {
-    "file": "assets/app-CbD0kcuv.js",
+    "file": "assets/app-D30ytB7q.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
